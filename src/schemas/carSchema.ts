@@ -7,15 +7,16 @@ export const carSchema = z.object({
     description: z.string().min(1),
     brand: z.string().min(1),
     year: z.number().positive(),
-    km: z.number().positive()
+    km: z.number().positive(),
+    userId: z.string().min(1)
 })
 
 export type TCarBody = z.infer< typeof carSchema >
 
-export const carCreateSchema = carSchema.omit({ id: true })
+export const carCreateSchema = carSchema.omit({ id: true, userId: true })
 
 export type TCarCreateBody = z.infer< typeof carCreateSchema >
 
-export const carUpdateSchema = carCreateSchema.partial();
+export const carUpdateSchema = carCreateSchema.partial()
 
 export type TCarUpdateBody = z.infer< typeof carUpdateSchema >

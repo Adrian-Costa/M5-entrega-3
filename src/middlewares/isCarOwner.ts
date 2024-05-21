@@ -1,0 +1,22 @@
+
+import { NextFunction, Request, Response } from "express";
+import { prisma } from "../database/prisma";
+import { AppError } from "../errors/appError";
+
+export class IsCarOwner {
+   static async execute(req: Request, res: Response, next: NextFunction) {
+      const userId = res.locals.decode.id
+
+      const carId = req.params.id
+
+      const car = await prisma.car.findFirst({
+         where: { id: carId },
+      });
+
+      if(car?.userId !== userId){
+        throw new AppError(403, "User must be the car owner")
+      }
+
+      next()
+   }
+}

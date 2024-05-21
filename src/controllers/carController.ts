@@ -8,13 +8,16 @@ export class CarController {
     constructor(@inject("CarServices") private carServices: CarServices) {}
 
     async create(req:Request, res:Response){
-        const response = await this.carServices.create(req.body)
+        const id = res.locals.decode.id
+
+        const response = await this.carServices.create(req.body, id)
 
         return res.status(201).json(response)
     }
 
     async getMany(req:Request, res:Response){
-        const response = await this.carServices.getMany()
+        const id = req.query?.userId
+        const response = await this.carServices.getMany(id as string)
 
         return res.status(200).json(response)
     }
